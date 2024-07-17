@@ -1,2 +1,2 @@
-# esp-library-template
-Template Library for ESP32
+# esp-wifi
+Wi-Fi Library for ESP32
