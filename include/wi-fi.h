@@ -20,6 +20,8 @@ class WiFiHandler {
 		void begin(wifi_mode_t mode);
 		void onEvent(void cbOnEvent(WiFiEvent_t event, WiFiEventInfo_t info), WiFiEvent_t event);
 		bool setCredentials(const char* ssid, const char* password);
+		String getLocalIP(void);
+		String getSSID(void);
 };
 
 #endif  /* WI_FI_H_ */

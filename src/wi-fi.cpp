@@ -40,3 +40,15 @@ bool WiFiHandler::setCredentials(const char* ssid, const char* password)
 
 	return false;
 }
+
+String WiFiHandler::getLocalIP(void) {
+	IPAddress IP = WiFi.localIP();
+	return IP.toString();
+}
+
+String WiFiHandler::getSSID(void) {
+	if(esp_wifi_get_config(WIFI_IF_STA, &_sta_config) == ESP_OK) {
+		return String((char *)_sta_config.sta.ssid);
+	}
+	return String();
+}
