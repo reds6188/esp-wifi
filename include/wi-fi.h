@@ -15,6 +15,7 @@ class WiFiHandler {
 	private:
 		wifi_config_t _sta_config;
 		wifi_config_t _ap_config;
+		bool _scanning;
 		void (*cbOnConnect)(void);
 		void (*cbOnDisconnect)(void);
 	public:
@@ -28,6 +29,7 @@ class WiFiHandler {
 		bool setCredentials(const char* ssid, const char* password);
 		String getLocalIP(void);
 		String getSSID(void);
+		void startScanNetworks(void);
 };
 
 #endif  /* WI_FI_H_ */

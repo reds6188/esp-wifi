@@ -39,6 +39,27 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 		},
 		ARDUINO_EVENT_WIFI_STA_GOT_IP
 	);
+
+	WiFi.onEvent(
+		[this](WiFiEvent_t event, WiFiEventInfo_t info) {
+			_scanning = false;
+			console.success(WIFI_T, "EVENT - Wi-Fi scan completed");
+			if(!info.wifi_scan_done.status) {
+				console.success(WIFI_T, "Found " + String(info.wifi_scan_done.number) + " network(s)");
+				for(int16_t i=0 ; i<info.wifi_scan_done.number ; i++) {
+					String encriptionType = (WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " " : "*";
+					String rssi = String(WiFi.RSSI(i));
+					console.info(WIFI_T, String(i) + ": " + WiFi.SSID(i) + " (" + rssi + " dBm) " + encriptionType);
+				}
+				console.info(WIFI_T, "Note: networks with \"*\" char are encrypted");
+			}
+			else
+				console.error(WIFI_T, "Failed to complete scan!");
+				if(WiFi.status() != WL_CONNECTED)
+					reconnect();
+		},
+		ARDUINO_EVENT_WIFI_SCAN_DONE
+	);
 }
 
 void WiFiHandler::begin(wifi_mode_t mode) {
@@ -59,10 +80,12 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 }
 
 void WiFiHandler::reconnect(void) {
+	console.info(WIFI_T, "Reconnecting...");
 	WiFi.reconnect();
 }
 
 void WiFiHandler::disconnect(void) {
+	console.warning(WIFI_T, "Disconnecting...");
 	WiFi.disconnect();
 }
 
@@ -104,4 +127,24 @@ String WiFiHandler::getSSID(void) {
 		return String((char *)_sta_config.sta.ssid);
 	}
 	return String();
+}
+
+void WiFiHandler::startScanNetworks(void) {
+	wl_status_t status = WiFi.status();
+	console.info(WIFI_T, "Connection status = " + String(status));
+	if((status != WL_IDLE_STATUS) && (status != WL_CONNECTED))
+		disconnect();
+	int16_t res = WiFi.scanNetworks(true, false, false, 300, 0, NULL, NULL);
+	if(res == WIFI_SCAN_RUNNING ) {
+		console.success(WIFI_T, "Scan is running");
+		_scanning = true;
+		return;
+	}
+	else if(res == WIFI_SCAN_FAILED) {
+		console.error(WIFI_T, "Failed to start running");
+	}
+	else {
+		console.success(WIFI_T, "Scan completed");
+	}
+	_scanning = true;
 }
