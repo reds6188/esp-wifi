@@ -8,10 +8,10 @@
 
 #define WIFI_T      "WI-FI"
 
-static const * char ap_ssid = "MyAccessPoint";
-static const ap_static_ip[] = { 192, 168, 4, 1 };
-static const ap_gateway_ip[] = { 192, 168, 4, 1 };
-static const ap_subnet_mask[] = { 192, 168, 4, 1 };
+static const char * ap_ssid = "MyAccessPoint";
+static const uint8_t ap_static_ip[] = { 192, 168, 4, 1 };
+static const uint8_t ap_gateway_ip[] = { 192, 168, 4, 1 };
+static const uint8_t ap_subnet_mask[] = { 192, 168, 4, 1 };
 
 /*
 #define AP_STATIC_IP    { 192, 168, 4, 1 }
