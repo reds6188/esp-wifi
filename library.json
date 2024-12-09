@@ -18,7 +18,7 @@
 	"dependencies": [
 		{
 			"name": "esp-console",
-			"version": "https://github.com/reds6188/esp-console.git@1.0.0"
+			"version": "https://github.com/reds6188/esp-console.git@1.1.0"
 		}
 	]
 }
