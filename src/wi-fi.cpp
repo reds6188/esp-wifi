@@ -64,9 +64,9 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 
 void WiFiHandler::begin(wifi_mode_t mode) {
 	if(mode == WIFI_AP) {
-		IPAddress localIP(192, 168, 4, 1);
-		IPAddress gatewayIP(192, 168, 4, 0);
-		IPAddress subnetMask(255, 255, 255, 0);
+		IPAddress localIP(ap_static_ip);
+		IPAddress gatewayIP(ap_gateway_ip);
+		IPAddress subnetMask(ap_subnet_mask);
 		WiFi.mode(WIFI_AP);
 		if(!WiFi.softAP(ap_ssid, NULL, 1, 0, 1, false)) {
 			console.error(WIFI_T, "AP failed to start!");
