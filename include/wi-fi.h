@@ -8,9 +8,16 @@
 
 #define WIFI_T      "WI-FI"
 
+static const * char ap_ssid = "MyAccessPoint";
+static const ap_static_ip[] = { 192, 168, 4, 1 };
+static const ap_gateway_ip[] = { 192, 168, 4, 1 };
+static const ap_subnet_mask[] = { 192, 168, 4, 1 };
+
+/*
 #define AP_STATIC_IP    { 192, 168, 4, 1 }
 #define AP_GATEWAY_IP   { 192, 168, 4, 0 }
 #define AP_SUBNET_MASK  { 192, 168, 4, 0 }
+*/
 
 class WiFiHandler {
 	private:
