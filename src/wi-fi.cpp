@@ -79,7 +79,7 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 			else
 			{
 				console.success(WIFI_T, "AP started!");
-				console.info(WIFI_T, "Network SSID: " + String(ap_ssid));
+				console.info(WIFI_T, "Network SSID: " + String(_ap_ssid));
 				IPAddress IP = WiFi.softAPIP();
 				console.info(WIFI_T, "AP IP address: " + IP.toString());
 			}
