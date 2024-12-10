@@ -2,6 +2,7 @@
 
 WiFiHandler::WiFiHandler(const char * hostname) {
 	WiFi.setHostname(hostname);
+	setApSsid("DefaultApSsid");
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
@@ -68,7 +69,7 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 		IPAddress gatewayIP(ap_gateway_ip);
 		IPAddress subnetMask(ap_subnet_mask);
 		WiFi.mode(WIFI_AP);
-		if(!WiFi.softAP(ap_ssid, NULL, 1, 0, 1, false)) {
+		if(!WiFi.softAP(_ap_ssid, NULL, 1, 0, 1, false)) {
 			console.error(WIFI_T, "AP failed to start!");
 		}
 		else {
@@ -118,6 +119,10 @@ void WiFiHandler::onConnect(void (*callback)(void)) {
 
 void WiFiHandler::onDisconnect(void (*callback)(void)) {
 	cbOnDisconnect = callback;
+}
+
+void WiFiHandler::setApSsid(const char* ssid) {
+	strncpy(_ap_ssid, ssid, 32);
 }
 
 bool WiFiHandler::setCredentials(const char* ssid, const char* password)
