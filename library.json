@@ -12,13 +12,13 @@
 		"email": "reds6188@gmail.com",
 		"maintainer": true
 	},
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"frameworks": "arduino",
 	"platforms": "espressif32",
 	"dependencies": [
 		{
 			"name": "esp-console",
-			"version": "https://github.com/reds6188/esp-console.git@1.1.0"
+			"version": "https://github.com/reds6188/esp-console.git#1.1.0"
 		}
 	]
 }
