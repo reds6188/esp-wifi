@@ -29,6 +29,7 @@ class WiFiHandler {
 	public:
 		WiFiHandler(const char * hostname);
 		void begin(wifi_mode_t mode);
+		void end(void);
 		void reconnect(void);
 		void disconnect(void);
 		void onEvent(void cbOnEvent(WiFiEvent_t event, WiFiEventInfo_t info), WiFiEvent_t event);

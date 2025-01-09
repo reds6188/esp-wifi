@@ -99,6 +99,10 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 	}
 }
 
+void WiFiHandler::end(void) {
+	WiFi.mode(WIFI_MODE_NULL);
+}
+
 void WiFiHandler::reconnect(void) {
 	console.info(WIFI_T, "Reconnecting...");
 	WiFi.reconnect();
