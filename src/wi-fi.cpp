@@ -157,6 +157,29 @@ String WiFiHandler::getSSID(void) {
 	return String();
 }
 
+int8_t WiFiHandler::getRSSI(void) {
+	return WiFi.RSSI();
+}
+
+String WiFiHandler::getMacAddress(wifi_interface_t interface) {
+	uint8_t mac[6];
+	char macStr[18] = { 0 };
+	if(esp_wifi_get_mac(interface, mac) == ESP_OK)
+		sprintf(macStr, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+
+	return String(macStr);
+}
+
+void WiFiHandler::printMacAddress(wifi_interface_t interface) {
+
+	if(interface == WIFI_IF_STA)
+		console.info(WIFI_T, "Wi-Fi MAC Address (STA): " + getMacAddress(interface));
+	else if(interface == WIFI_IF_AP)
+		console.info(WIFI_T, "Wi-Fi MAC Address (STA): " + getMacAddress(interface));
+	else
+		console.error(WIFI_T, "Unknown Wi-Fi interface");
+}
+
 void WiFiHandler::startScanNetworks(void) {
 	wl_status_t status = WiFi.status();
 	console.info(WIFI_T, "Connection status = " + String(status));

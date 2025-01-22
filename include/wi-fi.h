@@ -39,6 +39,9 @@ class WiFiHandler {
 		bool setCredentials(const char* ssid, const char* password);
 		String getLocalIP(void);
 		String getSSID(void);
+		int8_t getRSSI(void);
+		String getMacAddress(wifi_interface_t interface);
+		void printMacAddress(wifi_interface_t interface);
 		void startScanNetworks(void);
 };
 
