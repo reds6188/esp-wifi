@@ -98,6 +98,9 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 	else if(mode == WIFI_AP_STA) {
 		WiFi.mode(WIFI_AP_STA);
 		// Start AP -----------------------------------------------------------
+		IPAddress localIP(ap_static_ip);
+		IPAddress gatewayIP(ap_gateway_ip);
+		IPAddress subnetMask(ap_subnet_mask);
 		if(!WiFi.softAP(_ap_ssid, NULL, 1, 0, 1, false)) {
 			console.error(WIFI_T, "AP failed to start!");
 		}
@@ -159,7 +162,7 @@ bool WiFiHandler::setCredentials(const char* ssid, const char* password)
 	if(esp_wifi_get_config(WIFI_IF_STA, &_sta_config) == ESP_OK) {
 		strncpy((char *)_sta_config.sta.ssid, ssid, 32);
 		strncpy((char *)_sta_config.sta.password, password, 64);
-		if((getMode() == WIFI_MODE_STA) || (getMode() == WIFI_MODE_APSTA)) {
+		if((WiFi.getMode() == WIFI_MODE_STA) || (WiFi.getMode() == WIFI_MODE_APSTA)) {
 			if(esp_wifi_set_config(WIFI_IF_STA, &_sta_config) == ESP_OK)
 				return true;
 			else
