@@ -159,7 +159,7 @@ bool WiFiHandler::setCredentials(const char* ssid, const char* password)
 	if(esp_wifi_get_config(WIFI_IF_STA, &_sta_config) == ESP_OK) {
 		strncpy((char *)_sta_config.sta.ssid, ssid, 32);
 		strncpy((char *)_sta_config.sta.password, password, 64);
-		if((getMode() == WIFI_MODE_STA) || (getMode() == WIFI_MODE_AP_STA)) {
+		if((getMode() == WIFI_MODE_STA) || (getMode() == WIFI_MODE_APSTA)) {
 			if(esp_wifi_set_config(WIFI_IF_STA, &_sta_config) == ESP_OK)
 				return true;
 			else
