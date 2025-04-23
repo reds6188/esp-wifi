@@ -96,6 +96,31 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 		}
 	}
 	else if(mode == WIFI_AP_STA) {
+		WiFi.mode(WIFI_AP_STA);
+		// Start AP -----------------------------------------------------------
+		if(!WiFi.softAP(_ap_ssid, NULL, 1, 0, 1, false)) {
+			console.error(WIFI_T, "AP failed to start!");
+		}
+		else {
+			delay(100);
+			if(!WiFi.softAPConfig(localIP, gatewayIP, subnetMask))
+				console.error(WIFI_T, "AP configuration failed");
+			else
+			{
+				console.success(WIFI_T, "AP started!");
+				console.info(WIFI_T, "AP SSID: " + String(_ap_ssid));
+				IPAddress IP = WiFi.softAPIP();
+				console.info(WIFI_T, "AP IP address: " + IP.toString());
+			}
+		}
+		// Start STA ----------------------------------------------------------
+		WiFi.begin();
+		if(esp_wifi_get_config(WIFI_IF_STA, &_sta_config) != ESP_OK) {
+			console.error(WIFI_T, "Error on getting configuration");
+		}
+		else {
+			console.info(WIFI_T, "STA SSID: " + String((char *)_sta_config.sta.ssid));
+		}
 	}
 }
 
@@ -134,10 +159,12 @@ bool WiFiHandler::setCredentials(const char* ssid, const char* password)
 	if(esp_wifi_get_config(WIFI_IF_STA, &_sta_config) == ESP_OK) {
 		strncpy((char *)_sta_config.sta.ssid, ssid, 32);
 		strncpy((char *)_sta_config.sta.password, password, 64);
-		if(esp_wifi_set_config(WIFI_IF_STA, &_sta_config) == ESP_OK)
-			return true;
-		else
-			console.error(WIFI_T, "Error on setting configuration");
+		if((getMode() == WIFI_MODE_STA) || (getMode() == WIFI_MODE_AP_STA)) {
+			if(esp_wifi_set_config(WIFI_IF_STA, &_sta_config) == ESP_OK)
+				return true;
+			else
+				console.error(WIFI_T, "Error on setting configuration");
+		}
 	}
 	else
 		console.error(WIFI_T, "Error on getting configuration");
