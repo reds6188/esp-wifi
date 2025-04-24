@@ -3,52 +3,64 @@
 WiFiHandler::WiFiHandler(const char * hostname) {
 	WiFi.setHostname(hostname);
 	setApSsid("DefaultApSsid");
+	String wifi_str;
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			console.success(WIFI_T, "AP EVENT - Wi-Fi ready, waiting for connection...");
+			console.success(WIFI_T, "AP EVENT - Wi-Fi AP has started");
 		},
 		ARDUINO_EVENT_WIFI_AP_START
 	);
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			console.success(WIFI_T, "AP EVENT - Wi-Fi closed");
+			console.success(WIFI_T, "AP EVENT - Wi-Fi AP has stopped");
 		},
 		ARDUINO_EVENT_WIFI_AP_STOP
 	);
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			console.success(WIFI_T, "AP EVENT - Station connected to AP");
+			wifi_str = wifi_handler.macToString(info.wifi_ap_staconnected.mac);
+			console.success(WIFI_T, "AP EVENT - Station \"" + wifi_str + "\" connected to AP");
 		},
 		ARDUINO_EVENT_WIFI_AP_STACONNECTED
 	);
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			console.success(WIFI_T, "AP EVENT - Station disconnected to AP");
+			wifi_str = wifi_handler.macToString(info.wifi_ap_staconnected.mac);
+			console.warning(WIFI_T, "AP EVENT - Station \"" + wifi_str + "\" disconnected to AP");
 		},
 		ARDUINO_EVENT_WIFI_AP_STADISCONNECTED
 	);
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			console.warning(WIFI_T, "AP EVENT - IP assigned");
+			wifi_str = wifi_handler.ipToString(info.wifi_ap_staipassigned.ip);
+			console.log(WIFI_T, "IP=" + String(info.wifi_ap_staipassigned.ip.addr));
+			console.warning(WIFI_T, "AP EVENT - IP assigned: " + wifi_str);
 		},
 		ARDUINO_EVENT_WIFI_AP_STAIPASSIGNED
 	);
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			console.success(WIFI_T, "EVENT - Wi-Fi ready, waiting for connection...");
+			console.success(WIFI_T, "STA EVENT - Wi-Fi STA mode has started, waiting for connection...");
 		},
 		ARDUINO_EVENT_WIFI_STA_START
 	);
 
 	WiFi.onEvent(
+		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+			console.warning(WIFI_T, "STA EVENT - Wi-Fi STA mode has stopped");
+		},
+		ARDUINO_EVENT_WIFI_STA_STOP
+	);
+
+	WiFi.onEvent(
 		[this](WiFiEvent_t event, WiFiEventInfo_t info) {
-			console.success(WIFI_T, "EVENT - Wi-Fi connection was established with network \"" + getSSID() + "\"");
+			console.success(WIFI_T, "STA EVENT - Wi-Fi connection was established with network \"" + getSSID() + "\"");
 			if(!cbOnConnect)
 				return;
 			cbOnConnect();
@@ -59,7 +71,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 	WiFi.onEvent(
 		[this](WiFiEvent_t event, WiFiEventInfo_t info) {
 			uint8_t reason = info.wifi_sta_disconnected.reason;
-			console.warning(WIFI_T, "EVENT - Wi-Fi was disconnected, reason code: " + String(reason) + " (" + String(WiFi.disconnectReasonName((wifi_err_reason_t)reason)) + ")");
+			console.warning(WIFI_T, "STA EVENT - Wi-Fi was disconnected, reason code: " + String(reason) + " (" + String(WiFi.disconnectReasonName((wifi_err_reason_t)reason)) + ")");
 			reconnect();
 			if(!cbOnDisconnect)
 				return;
@@ -71,7 +83,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
 			IPAddress local_IP = IPAddress(info.got_ip.ip_info.ip.addr);
-			console.success(WIFI_T, "EVENT - Local IP address: " + local_IP.toString());
+			console.success(WIFI_T, "STA EVENT - Local IP address: " + local_IP.toString());
 		},
 		ARDUINO_EVENT_WIFI_STA_GOT_IP
 	);
@@ -79,7 +91,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 	WiFi.onEvent(
 		[this](WiFiEvent_t event, WiFiEventInfo_t info) {
 			_scanning = false;
-			console.success(WIFI_T, "EVENT - Wi-Fi scan completed");
+			console.success(WIFI_T, "STA EVENT - Wi-Fi scan completed");
 			if(!info.wifi_scan_done.status) {
 				console.success(WIFI_T, "Found " + String(info.wifi_scan_done.number) + " network(s)");
 				for(int16_t i=0 ; i<info.wifi_scan_done.number ; i++) {
