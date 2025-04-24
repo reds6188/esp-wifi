@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include <ESPmDNS.h>
 #include <esp_wifi.h>
 #include <console.h>
 
@@ -11,12 +12,6 @@
 static const uint8_t ap_static_ip[] = { 192, 168, 4, 1 };
 static const uint8_t ap_gateway_ip[] = { 192, 168, 4, 0 };
 static const uint8_t ap_subnet_mask[] = { 255, 255, 255, 0 };
-
-/*
-#define AP_STATIC_IP    { 192, 168, 4, 1 }
-#define AP_GATEWAY_IP   { 192, 168, 4, 0 }
-#define AP_SUBNET_MASK  { 192, 168, 4, 0 }
-*/
 
 class WiFiHandler {
 	private:
@@ -46,6 +41,8 @@ class WiFiHandler {
 		String macToString(uint8_t * mac);
 		String ipToString(esp_ip4_addr_t ip);
 		void startScanNetworks(void);
+		void startMDNS(const char* host_name);
+		void stopMDNS(void);
 };
 
 #endif  /* WI_FI_H_ */

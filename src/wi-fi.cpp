@@ -295,3 +295,18 @@ void WiFiHandler::startScanNetworks(void) {
 	}
 	_scanning = true;
 }
+
+void WiFiHandler::startMDNS(const char* host_name) {
+    if(MDNS.begin(host_name))
+    {
+        MDNS.addService("http", "tcp", 80);
+        console.success(WIFI_T, "MDNS start, open the browser and type \"http://" + String(host_name) + ".local\"");
+    }
+    else
+        console.error(WIFI_T, "MDNS failed to start");
+}
+
+void WiFiHandler::stopMDNS(void) {
+    MDNS.end();
+    console.warning(WIFI_T, "MDNS has stopped");
+}
