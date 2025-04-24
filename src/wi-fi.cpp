@@ -3,7 +3,6 @@
 WiFiHandler::WiFiHandler(const char * hostname) {
 	WiFi.setHostname(hostname);
 	setApSsid("DefaultApSsid");
-	String wifi_str;
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
@@ -21,7 +20,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			wifi_str = wifi_handler.macToString(info.wifi_ap_staconnected.mac);
+			String wifi_str = wifi_handler.macToString(info.wifi_ap_staconnected.mac);
 			console.success(WIFI_T, "AP EVENT - Station \"" + wifi_str + "\" connected to AP");
 		},
 		ARDUINO_EVENT_WIFI_AP_STACONNECTED
@@ -29,7 +28,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			wifi_str = wifi_handler.macToString(info.wifi_ap_staconnected.mac);
+			String wifi_str = wifi_handler.macToString(info.wifi_ap_staconnected.mac);
 			console.warning(WIFI_T, "AP EVENT - Station \"" + wifi_str + "\" disconnected to AP");
 		},
 		ARDUINO_EVENT_WIFI_AP_STADISCONNECTED
@@ -37,7 +36,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
-			wifi_str = wifi_handler.ipToString(info.wifi_ap_staipassigned.ip);
+			String wifi_str = wifi_handler.ipToString(info.wifi_ap_staipassigned.ip);
 			console.log(WIFI_T, "IP=" + String(info.wifi_ap_staipassigned.ip.addr));
 			console.warning(WIFI_T, "AP EVENT - IP assigned: " + wifi_str);
 		},
