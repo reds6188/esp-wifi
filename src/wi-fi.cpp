@@ -6,6 +6,41 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 
 	WiFi.onEvent(
 		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+			console.success(WIFI_T, "AP EVENT - Wi-Fi ready, waiting for connection...");
+		},
+		ARDUINO_EVENT_WIFI_AP_START
+	);
+
+	WiFi.onEvent(
+		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+			console.success(WIFI_T, "AP EVENT - Wi-Fi closed");
+		},
+		ARDUINO_EVENT_WIFI_AP_STOP
+	);
+
+	WiFi.onEvent(
+		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+			console.success(WIFI_T, "AP EVENT - Station connected to AP");
+		},
+		ARDUINO_EVENT_WIFI_AP_STACONNECTED
+	);
+
+	WiFi.onEvent(
+		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+			console.success(WIFI_T, "AP EVENT - Station disconnected to AP");
+		},
+		ARDUINO_EVENT_WIFI_AP_STADISCONNECTED
+	);
+
+	WiFi.onEvent(
+		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+			console.warning(WIFI_T, "AP EVENT - IP assigned");
+		},
+		ARDUINO_EVENT_WIFI_AP_STAIPASSIGNED
+	);
+
+	WiFi.onEvent(
+		[](WiFiEvent_t event, WiFiEventInfo_t info) {
 			console.success(WIFI_T, "EVENT - Wi-Fi ready, waiting for connection...");
 		},
 		ARDUINO_EVENT_WIFI_STA_START
