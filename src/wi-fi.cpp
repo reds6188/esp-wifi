@@ -19,7 +19,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 	);
 
 	WiFi.onEvent(
-		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+		[this](WiFiEvent_t event, WiFiEventInfo_t info) {
 			String wifi_str = macToString(info.wifi_ap_staconnected.mac);
 			console.success(WIFI_T, "AP EVENT - Station \"" + wifi_str + "\" connected to AP");
 		},
@@ -27,7 +27,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 	);
 
 	WiFi.onEvent(
-		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+		[this](WiFiEvent_t event, WiFiEventInfo_t info) {
 			String wifi_str = macToString(info.wifi_ap_staconnected.mac);
 			console.warning(WIFI_T, "AP EVENT - Station \"" + wifi_str + "\" disconnected to AP");
 		},
@@ -35,7 +35,7 @@ WiFiHandler::WiFiHandler(const char * hostname) {
 	);
 
 	WiFi.onEvent(
-		[](WiFiEvent_t event, WiFiEventInfo_t info) {
+		[this](WiFiEvent_t event, WiFiEventInfo_t info) {
 			String wifi_str = ipToString(info.wifi_ap_staipassigned.ip);
 			console.log(WIFI_T, "IP=" + String(info.wifi_ap_staipassigned.ip.addr));
 			console.warning(WIFI_T, "AP EVENT - IP assigned: " + wifi_str);
