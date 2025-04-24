@@ -43,6 +43,8 @@ class WiFiHandler {
 		int8_t getRSSI(void);
 		String getMacAddress(wifi_interface_t interface);
 		void printMacAddress(wifi_interface_t interface);
+		String macToString(uint8_t * mac);
+		String ipToString(esp_ip4_addr_t ip);
 		void startScanNetworks(void);
 };
 

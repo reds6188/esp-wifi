@@ -249,6 +249,22 @@ void WiFiHandler::printMacAddress(wifi_interface_t interface) {
 		console.error(WIFI_T, "Unknown Wi-Fi interface");
 }
 
+String WiFiHandler::macToString(uint8_t * mac) {
+	char macStr[18] = { 0 };
+    sprintf(macStr, "%02X:%02X:%02X:%02X:%02X:%02X", *mac, *(mac+1), *(mac+2), *(mac+3), *(mac+4), *(mac+5));
+
+	return String(macStr);
+}
+
+String WiFiHandler::ipToString(esp_ip4_addr_t ip)  {
+    uint8_t ip_value[4];
+    char ipStr[20] = { 0 };
+    for(uint8_t i=0 ; i<4 ; i++)
+        ip_value[i] = (ip.addr >> 8*i) & 0xFF;
+    sprintf(ipStr, "%d.%d.%d.%d", ip_value[0], ip_value[1], ip_value[2], ip_value[3]);
+    return String(ipStr);
+}
+
 void WiFiHandler::startScanNetworks(void) {
 	wl_status_t status = WiFi.status();
 	console.info(WIFI_T, "Connection status = " + String(status));
