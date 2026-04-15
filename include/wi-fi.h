@@ -13,6 +13,14 @@ static const uint8_t ap_static_ip[] = { 192, 168, 4, 1 };
 static const uint8_t ap_gateway_ip[] = { 192, 168, 4, 0 };
 static const uint8_t ap_subnet_mask[] = { 255, 255, 255, 0 };
 
+static const char * str_wifi_mode[5] = {
+	"OFF",
+    "STA",
+    "AP",
+    "AP+STA",
+    "-"
+};
+
 class WiFiHandler {
 	private:
 		wifi_config_t _sta_config;
