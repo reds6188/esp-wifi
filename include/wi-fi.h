@@ -26,6 +26,8 @@ class WiFiHandler {
 		void begin(wifi_mode_t mode);
 		void end(void);
 		void switchMode(wifi_mode_t mode);
+		wifi_mode_t getMode(void);
+		String printMode(void);
 		void reconnect(void);
 		void disconnect(void);
 		void onEvent(void cbOnEvent(WiFiEvent_t event, WiFiEventInfo_t info), WiFiEvent_t event);

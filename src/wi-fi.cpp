@@ -186,6 +186,14 @@ void WiFiHandler::reconnect(void) {
 	WiFi.reconnect();
 }
 
+wifi_mode_t WiFiHandler::getMode(void) {
+	return WiFi.getMode();
+}
+
+String WiFiHandler::printMode(void) {
+	return String(str_wifi_mode[WiFi.getMode()]);
+}
+
 void WiFiHandler::disconnect(void) {
 	console.warning(WIFI_T, "Disconnecting...");
 	WiFi.disconnect();
