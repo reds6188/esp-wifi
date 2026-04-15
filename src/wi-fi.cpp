@@ -186,6 +186,10 @@ void WiFiHandler::reconnect(void) {
 	WiFi.reconnect();
 }
 
+bool WiFiHandler::connected(void) {
+	return WiFi.status() == WL_CONNECTED;
+}
+
 wifi_mode_t WiFiHandler::getMode(void) {
 	return WiFi.getMode();
 }

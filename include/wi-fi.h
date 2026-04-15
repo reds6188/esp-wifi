@@ -38,6 +38,7 @@ class WiFiHandler {
 		String printMode(void);
 		void reconnect(void);
 		void disconnect(void);
+		bool connected(void);
 		void onEvent(void cbOnEvent(WiFiEvent_t event, WiFiEventInfo_t info), WiFiEvent_t event);
 		void onConnect(void (*callback)(void));
 		void onDisconnect(void (*callback)(void));
